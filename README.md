@@ -25,10 +25,12 @@ GOPATH
 
 ## RUN CLIENT
 
-``` echo "server_addr: $(NGROK_DOAMIN):4443" >> ngrok_config ```    
+``` echo "server_addr: $NGROK_DOMAIN:4443" >>ngrok-config ```    
 
-```./bin/ngrok -config=ngrok-config -log=ngrok.log -proto="http" $(YOUR_LOCALH_PORT_NEED_SHARE) ```    
 
+```./bin/ngrok -config=ngrok-config -log=ngrok.log -proto="http" 3000 ```       
+
+the port 3000 should be changed to yours.   
 
 ## fig yaml
 
