@@ -9,5 +9,5 @@ RUN go install ngrok/main/ngrok
 EXPOSE 80
 EXPOSE 4443
 
-CMD ["./run.sh"]
+CMD ["./run-server.sh"]
 
