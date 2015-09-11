@@ -3,7 +3,6 @@ package client
 import (
 	"crypto/tls"
 	"fmt"
-	metrics "github.com/inconshreveable/go-metrics"
 	"io/ioutil"
 	"math"
 	"ngrok/client/mvc"
@@ -17,6 +16,8 @@ import (
 	"strings"
 	"sync/atomic"
 	"time"
+
+	metrics "github.com/inconshreveable/go-metrics"
 )
 
 const (
@@ -55,20 +56,20 @@ type ClientModel struct {
 func newClientModel(config *Configuration, ctl mvc.Controller) *ClientModel {
 	protoMap := make(map[string]proto.Protocol)
 	protoMap["http"] = proto.NewHttp()
-//	protoMap["https"] = protoMap["http"]
-//	protoMap["tcp"] = proto.NewTcp()
-//	protocols := []proto.Protocol{protoMap["http"], protoMap["tcp"]}
+	//	protoMap["https"] = protoMap["http"]
+	//	protoMap["tcp"] = proto.NewTcp()
+	//	protocols := []proto.Protocol{protoMap["http"], protoMap["tcp"]}
 	protocols := []proto.Protocol{protoMap["http"]}
 	// configure TLS
 	var tlsConfig *tls.Config
-//	if config.TrustHostRootCerts {
+	//	if config.TrustHostRootCerts {
 	tlsConfig = &tls.Config{}
-//	} else {
-//		var err error
-//		if tlsConfig, err = LoadTLSConfig(rootCrtPaths); err != nil {
-//			panic(err)
-//		}
-//	}
+	//	} else {
+	//		var err error
+	//		if tlsConfig, err = LoadTLSConfig(rootCrtPaths); err != nil {
+	//			panic(err)
+	//		}
+	//	}
 
 	return &ClientModel{
 		Logger: log.NewPrefixLogger("client"),
@@ -204,15 +205,15 @@ func (c *ClientModel) control() {
 		err     error
 	)
 	ctlConn, err = conn.Dial(c.serverAddr, "ctl", nil)
-//	if c.proxyUrl == "" {
-		// simple non-proxied case, just connect to the server
-//	ctlConn, err = conn.Dial(c.serverAddr, "ctl", c.tlsConfig)
-//	} else {
-//		ctlConn, err = conn.DialHttpProxy(c.proxyUrl, c.serverAddr, "ctl", c.tlsConfig)
-//	}
+	//	if c.proxyUrl == "" {
+	// simple non-proxied case, just connect to the server
+	//	ctlConn, err = conn.Dial(c.serverAddr, "ctl", c.tlsConfig)
+	//	} else {
+	//		ctlConn, err = conn.DialHttpProxy(c.proxyUrl, c.serverAddr, "ctl", c.tlsConfig)
+	//	}
 	if err != nil {
-		
-		panic("model.go 213 "+err.Error())
+
+		panic("model.go 213 " + err.Error())
 	}
 	defer ctlConn.Close()
 
@@ -227,14 +228,14 @@ func (c *ClientModel) control() {
 	}
 
 	if err = msg.WriteMsg(ctlConn, auth); err != nil {
-//		fmt.Printf("model line 229")
+		//		fmt.Printf("model line 229")
 		panic(err)
 	}
 
 	// wait for the server to authenticate us
 	var authResp msg.AuthResp
 	if err = msg.ReadMsgInto(ctlConn, &authResp); err != nil {
-//		fmt.Printf("model line 236")
+		//		fmt.Printf("model line 236")
 		panic(err)
 	}
 
@@ -331,9 +332,9 @@ func (c *ClientModel) proxy() {
 	)
 
 	if c.proxyUrl == "" {
-		remoteConn, err = conn.Dial(c.serverAddr, "pxy", c.tlsConfig)
+		remoteConn, err = conn.Dial(c.serverAddr, "pxy", nil)
 	} else {
-		remoteConn, err = conn.DialHttpProxy(c.proxyUrl, c.serverAddr, "pxy", c.tlsConfig)
+		remoteConn, err = conn.DialHttpProxy(c.proxyUrl, c.serverAddr, "pxy", nil)
 	}
 
 	if err != nil {
