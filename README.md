@@ -5,8 +5,9 @@
 
 ## ENVS
 
-```NGROK_DOAMIN=taoge.ngrok.me```   
-```GOPATH```      
+NGROK_DOAMIN=taoge.ngrok.me  
+
+GOPATH
 
 
 ##SERVER
