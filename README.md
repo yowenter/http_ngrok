@@ -5,9 +5,9 @@
 
 ## ENVS
 
-NGROK_DOAMIN=taoge.ngrok.me  
+NGROK_DOMAIN=taoge.ngrok.me  
 
-GOPATH
+GOPATH = $HOME/Go
 
 
 ##SERVER
