@@ -1,46 +1,69 @@
 # http_ngrok
 
-```SOURCE CODE``` :[https://github.com/inconshreveable/ngrok](https://github.com/inconshreveable/ngrok)
+firewall traversal http ngrok.
 
 
-## ENVS
+copy from ```SOURCE CODE``` :[https://github.com/inconshreveable/ngrok](https://github.com/inconshreveable/ngrok)
 
-NGROK_DOMAIN=taoge.ngrok.me  
-
-GOPATH = $HOME/Go
+`docker pull daocloud.io/airywenter/taoge_ngrok:latest`
 
 
-##SERVER
-
-```go install ngrok/main/ngrokd```   
-
-## CLIENT
-
-```go install ngrok/main/ngrok```      
 
 
-## RUN SERVER
 
-``` ./bin/ngrokd -domain=$NGROK_DOMAIN -httpAddr=":80" ```      
-
-## RUN CLIENT
-
-``` echo "server_addr: $NGROK_DOMAIN:4443" >>ngrok-config ```    
-
-
-```./bin/ngrok -config=ngrok-config -log=ngrok.log -proto="http" 3000 ```       
-
-the port 3000 should be changed to yours.   
-
-## fig yaml
+## NGROK SERVER
 
 ```
-ngrok_lu:
-  image: daocloud.io/airywenter/taoge_ngrok:master-4dd958b
+
+ngrok_server:
+  image: daocloud.io/airywenter/taoge_ngrok
+  command: sh run-server.sh
+  privileged: false
   restart: always
   ports:
-    - 4443:4443
-    - 80:80
+  - 80:80
+  - 4443:4443
   environment:
-    - NGROK_DOMAIN=ngrok.lu
+  - NGROK_DOMAIN=example.com
+
+
 ```
+
+NGROK_DOMAIN : your domain
+
+ngrok_server will listen ports:    
+`80`  for public .    
+`4443` for tunnel  .
+
+
+
+
+## NGROK CLIENT
+
+
+```
+ngrok_client:
+  image: daocloud.io/airywenter/taoge_ngrok
+  command: sh run-client.sh
+  net: host
+  privileged: false
+  restart: always
+  environment:
+  - CLIENT_PROXY_PORT=80
+  - SERVER_PROXY_PORT=4443
+  - NGROK_DOMAIN=example.com 
+
+```
+
+Please use `net:host` ensure make tunnel .
+
+
+CLIENT_PROXY_PORT :the port you want make public    
+SERVER_PROXY_PORT : the port for tunnel with server    
+NGROK_DOMAIN : your domain    
+
+`you can find the tunnel url  in  ngrok.log in the container !!!`
+
+
+
+
