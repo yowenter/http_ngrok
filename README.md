@@ -52,15 +52,18 @@ ngrok_client:
   - CLIENT_PROXY_PORT=80
   - SERVER_PROXY_PORT=4443
   - NGROK_DOMAIN=example.com 
+  - SUBDOMAIN=test
 
 ```
+
 
 Please use `net:host` ensure make tunnel .
 
 
-CLIENT_PROXY_PORT :the port you want make public    
-SERVER_PROXY_PORT : the port for tunnel with server    
-NGROK_DOMAIN : your domain    
+- CLIENT_PROXY_PORT :the port you want make public    
+- SERVER_PROXY_PORT : the port for tunnel with server    
+- NGROK_DOMAIN : your domain    
+- SUBDOMAIN: if you set the environment, the ngrok subdomain won't change 
 
 `you can find the tunnel url  in  ngrok.log in the container !!!`
 
